@@ -49,6 +49,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private double suma = 0;
     private double sumaEnvio = 0;
     private double sumaIVA = 0;
+    private String detalleDatos = " ";
 
     public JFrameTienda() {
         initComponents();
@@ -98,6 +99,10 @@ public class JFrameTienda extends javax.swing.JFrame {
                 datos[i][4] = listaTienda.get(i).getTotal();
 
             }
+            for (Tienda dato : listaTienda) {
+                detalleDatos += dato + "\n";
+            }
+
             DefaultTableModel model = new DefaultTableModel(datos, columnas);
             return model;
         } catch (Exception ex) {
@@ -146,9 +151,13 @@ public class JFrameTienda extends javax.swing.JFrame {
         jButton_EliminarSeleccion = new javax.swing.JButton();
         jLabel_Fondo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1230, 955));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("MingLiU_HKSCS-ExtB", 1, 24)); // NOI18N
@@ -584,19 +593,27 @@ public class JFrameTienda extends javax.swing.JFrame {
         }
 
         JOptionPane.showMessageDialog(this, "Su compra se ha realizado con éxito"
-                + "\nCosto de la compra:        "+"₡"+ suma
-                + "\nCosto de envio:                 "+"₡"+ sumaEnvio
-                + "\nIVA:                                       "+"₡"+ sumaIVA
-                + "\nGran Total:                         "+"₡"+ neto
+                + "\nCosto de la compra:        " + "₡" + suma
+                + "\nCosto de envio:                 " + "₡" + sumaEnvio
+                + "\nIVA:                                       " + "₡" + sumaIVA
+                + "\nGran Total:                         " + "₡" + neto
                 + "\n"
                 + "\n"
                 + "\n"
                 + "Gracias por su Compra", null, -1);
-        
+        JFrameRecibo recibo = new JFrameRecibo();
+        recibo.setVisible(true);
+        this.setVisible(false);
         vaciarCarrito();
         LimpiarCampos();
         jTextField_Neto.setText("");
     }//GEN-LAST:event_jButton_FinalizarCompraActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFramePrincialCliente jfPrincipalCliente = new JFramePrincialCliente();
+        jfPrincipalCliente.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -643,6 +660,37 @@ public class JFrameTienda extends javax.swing.JFrame {
         sumaIVA = suma * 0.2;
         neto = suma + sumaEnvio + sumaIVA;
         return neto;
+    }
+
+    @Override
+    public String toString() {
+
+        return "\t\tFactura\n"
+                + "\t\t\tNúmero de Factura"
+                + "\n"
+                + "==================================" 
+                + "\n"
+                + "Nombre: " + "\n"
+                + "Dirección:" + "\n"
+                + "Email:" + "\n"
+                + "Teléfono:" + "\n"
+                + "=================================="
+                + "\n" + "\n"
+                + "Código\tPrecio Unitario\tCantidad\tTotal\tProducto"
+                + "\n"
+                + detalleDatos
+                + "\n"
+                + "\n"
+                + "\t\t\tCosto de Envio(30%)\t" + sumaEnvio
+                + "\n"
+                + "\t\t\tIVA(20%)              \t" + sumaIVA
+                + "\n"
+                + "\t\t\tTotal a pagar      \t" + neto
+                +"\n"
+                +"\n"
+                +"\n"
+                +"\n"
+                +"Gracias Por Su Comprar";
     }
 
     private void vaciarCarrito() {

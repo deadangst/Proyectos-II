@@ -16,6 +16,7 @@ public class HistoricoFacturas {
     private double iva;
     private double totalFinal;
     private LocalDateTime horaCompra = LocalDateTime.now();
+    
 
     public String getCodigoFactura() {
         return codigoFactura;

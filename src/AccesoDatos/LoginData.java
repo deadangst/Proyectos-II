@@ -27,7 +27,7 @@ public class LoginData implements ILoginData {
 
         try {
 
-            String lineaLogin = UtilidadesArchivos.buscarEnArchivo(UtilidadesArchivos.ARCHIVO_LOGIN, login.getUsuario());
+            String lineaLogin = UtilidadesArchivos.buscarEnArchivo(UtilidadesArchivos.ARCHIVO_LOGINTIENDA, login.getUsuario());
             Login loginBuscado = mapearLineaLogin(lineaLogin);
             if (loginBuscado.getPassword().equals(login.getPassword())) {
                 return true;

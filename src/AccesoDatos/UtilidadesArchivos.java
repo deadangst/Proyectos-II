@@ -11,7 +11,7 @@ public class UtilidadesArchivos {
     public static final String ARCHIVO_USUARIOSTIENDA = "C:\\archivos\\usuariostienda.txt";
     public static final String ARCHIVO_HISTORICO = "C:\\archivos\\historico.txt";
     public static final String ARCHIVO_CARRITO = "C:\\archivos\\carrito.txt";
-    public static final String ARCHIVO_LOGIN = "C:\\archivos\\login.txt";
+    public static final String ARCHIVO_LOGINTIENDA = "C:\\archivos\\logintienda.txt";
     
     
     public static final String TOKEN = ";";

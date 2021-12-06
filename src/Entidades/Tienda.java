@@ -94,13 +94,15 @@ public class Tienda {
         this.codigo = codigo;
     }
 
+    @Override
+    public String toString() {
+        return codigo + "\t"  + precio + "\t" + cantidad + "\t" + total+ "\t"  + nombre;
+    }
+
  
 
 
 
-//    @Override
-//    public String toString() {
-//        return "Tienda{" + "nombre=" + nombre + ", precio=" + precio + ", cantidad=" + cantidad + ", total=" + total + ", fecha=" + dtf.format(horaCompra) ;
-//    }
+ 
 
 }
