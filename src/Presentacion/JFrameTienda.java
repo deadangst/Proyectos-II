@@ -50,6 +50,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private double sumaEnvio = 0;
     private double sumaIVA = 0;
     private String detalleDatos = " ";
+    
 
     public JFrameTienda() {
         initComponents();
@@ -601,9 +602,8 @@ public class JFrameTienda extends javax.swing.JFrame {
                 + "\n"
                 + "\n"
                 + "Gracias por su Compra", null, -1);
-        JFrameRecibo recibo = new JFrameRecibo();
-        recibo.setVisible(true);
-        this.setVisible(false);
+
+        llamarRecibo();
         vaciarCarrito();
         LimpiarCampos();
         jTextField_Neto.setText("");
@@ -649,6 +649,13 @@ public class JFrameTienda extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void llamarRecibo(){
+            JFrameRecibo recibo = new JFrameRecibo(this);
+        recibo.setVisible(true);
+        this.setVisible(false);
+
+    }
 
     private double compraNeta() {
         int contar = jTable_Carrito.getRowCount();
@@ -656,7 +663,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         for (int i = 0; i < contar; i++) {
             suma = suma + Double.parseDouble(jTable_Carrito.getValueAt(i, 4).toString());
         }
-        sumaEnvio = suma * 0.3;
+        this.sumaEnvio = suma * 0.3;
         sumaIVA = suma * 0.2;
         neto = suma + sumaEnvio + sumaIVA;
         return neto;
@@ -664,9 +671,9 @@ public class JFrameTienda extends javax.swing.JFrame {
 
     @Override
     public String toString() {
-
+        
         return "\t\tFactura\n"
-                + "\t\t\tNúmero de Factura"
+                + "\t\t\tNúmero de Factura" +jLabel_NumeroFactura.getText()
                 + "\n"
                 + "==================================" 
                 + "\n"
@@ -686,7 +693,7 @@ public class JFrameTienda extends javax.swing.JFrame {
                 + "\t\t\tIVA(20%)              \t" + sumaIVA
                 + "\n"
                 + "\t\t\tTotal a pagar      \t" + neto
-                +"\n"
+                +"\n" 
                 +"\n"
                 +"\n"
                 +"\n"

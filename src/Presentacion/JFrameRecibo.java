@@ -9,11 +9,14 @@ import Presentacion.JFrameTienda;
 
 public class JFrameRecibo extends javax.swing.JFrame {
 
-    JFrameTienda tienda = new JFrameTienda();
-
-    public JFrameRecibo() {
+    
+    private final JFrameTienda tienda;
+    
+    public JFrameRecibo(JFrameTienda tienda) {
         initComponents();
+        this.tienda = tienda;
         Recibo();
+        
     }
 
     /**
@@ -81,7 +84,7 @@ public class JFrameRecibo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameRecibo().setVisible(true);
+                new JFrameRecibo(null).setVisible(true);
             }
         });
     }
@@ -90,6 +93,8 @@ public class JFrameRecibo extends javax.swing.JFrame {
 
         jText_Recibo.setText(tienda.toString()
         );
+        
+        
 
     }
 
