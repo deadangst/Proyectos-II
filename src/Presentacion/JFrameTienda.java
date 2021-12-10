@@ -27,9 +27,11 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import Entidades.HistoricoFacturas;
-import Entidades.Excepciones.HistoricoFacturasExcepcion;
+
 import Negocio.HistoricoFacturasNegocio;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -49,8 +51,12 @@ public class JFrameTienda extends javax.swing.JFrame {
     private double suma = 0;
     private double sumaEnvio = 0;
     private double sumaIVA = 0;
-    private String detalleDatos = " ";
-    
+    private String detalleDatos = "";
+    private String numeroOrden = "";
+    private static final String DATE_FORMATTER = "dd/MM/yyyy HH:mm:ss";
+    private LocalDateTime fechaOrden;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
+    private String fechaConFormato = "";
 
     public JFrameTienda() {
         initComponents();
@@ -61,7 +67,6 @@ public class JFrameTienda extends javax.swing.JFrame {
         TableModel tableModelTienda = this.completarTiendaModel();
         jTable_Carrito.setModel(tableModelTienda);
         facturasNegocio = new HistoricoFacturasNegocio();
-
     }
 
     private TableModel completarCatalogoModel() {
@@ -91,26 +96,22 @@ public class JFrameTienda extends javax.swing.JFrame {
             List<Tienda> listaTienda = tiendaNegocio.consultarTodasLasVentas();
             Object[] columnas = new Object[]{"Código", "Nombre", "Precio", "Cantidad", "Total"};
             Object[][] datos = new Object[listaTienda.size()][columnas.length];
-
             for (int i = 0; i < listaTienda.size(); i++) {
                 datos[i][0] = listaTienda.get(i).getCodigo();
                 datos[i][1] = listaTienda.get(i).getNombre();
                 datos[i][2] = listaTienda.get(i).getPrecio();
                 datos[i][3] = listaTienda.get(i).getCantidad();
                 datos[i][4] = listaTienda.get(i).getTotal();
-
             }
             for (Tienda dato : listaTienda) {
                 detalleDatos += dato + "\n";
             }
-
             DefaultTableModel model = new DefaultTableModel(datos, columnas);
             return model;
         } catch (Exception ex) {
             Logger.getLogger(JFrameInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-
     }
 
     /**
@@ -129,7 +130,6 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTextField_PrecioCompra = new javax.swing.JTextField();
         jButton_AgregarCarrito = new javax.swing.JButton();
         jButton_LimpiaCarrito = new javax.swing.JButton();
-        jLabel_Error = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Catalogo = new javax.swing.JTable();
         jLabel_Codigo = new javax.swing.JLabel();
@@ -143,7 +143,6 @@ public class JFrameTienda extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable_Carrito = new javax.swing.JTable();
         jLabel_NumeroFactura = new javax.swing.JLabel();
-        jLabel_NumFactura = new javax.swing.JLabel();
         jButton_Neto = new javax.swing.JButton();
         jTextField_Neto = new javax.swing.JTextField();
         jButton_FinalizarCompra = new javax.swing.JButton();
@@ -161,10 +160,10 @@ public class JFrameTienda extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("MingLiU_HKSCS-ExtB", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("MingLiU_HKSCS-ExtB", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 0, 0));
         jLabel1.setText("Compumundohipermegared");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 6, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 102, 90));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Realizar Compra"));
@@ -198,11 +197,6 @@ public class JFrameTienda extends javax.swing.JFrame {
                 jButton_LimpiaCarritoActionPerformed(evt);
             }
         });
-
-        jLabel_Error.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel_Error.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel_Error.setText("Error");
-        jLabel_Error.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jTable_Catalogo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTable_Catalogo.setModel(new javax.swing.table.DefaultTableModel(
@@ -276,7 +270,6 @@ public class JFrameTienda extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTxt_Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel_Error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -332,11 +325,10 @@ public class JFrameTienda extends javax.swing.JFrame {
                         .addComponent(jLabel_Nombre)
                         .addComponent(jTextField_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jSpinner_CantCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jLabel_Error, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 44, -1, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, 440));
 
         jPanel3.setBackground(new java.awt.Color(0, 51, 102, 90));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Carrito de Compras"));
@@ -381,8 +373,6 @@ public class JFrameTienda extends javax.swing.JFrame {
 
         jLabel_NumeroFactura.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel_NumFactura.setText("Numero de Orden");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -392,19 +382,14 @@ public class JFrameTienda extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1123, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel_NumFactura)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel_NumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_NumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_NumFactura)
-                    .addComponent(jLabel_NumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addComponent(jLabel_NumeroFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -526,6 +511,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private void jButton_NetoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NetoActionPerformed
         compraNeta();
         jTextField_Neto.setText(Double.toString(neto));
+
     }//GEN-LAST:event_jButton_NetoActionPerformed
 
     private void jButton_EliminarSeleccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_EliminarSeleccionActionPerformed
@@ -551,9 +537,9 @@ public class JFrameTienda extends javax.swing.JFrame {
 
     private void jTable_CarritoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_CarritoMouseClicked
         int seleccionada = jTable_Carrito.rowAtPoint(evt.getPoint());
+        jLabel_CodigoValor.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 0)));
         jTextField_Nombre.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 1)));
         jTextField_PrecioCompra.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 2)));
-        jLabel_CodigoValor.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 0)));
         jSpinner_CantCompra.setValue(Integer.parseInt(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 3))));
     }//GEN-LAST:event_jTable_CarritoMouseClicked
 
@@ -574,39 +560,43 @@ public class JFrameTienda extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
         }
+        //jTextField_Neto.setText("");
     }//GEN-LAST:event_jButton_ActualizarCantidadActionPerformed
 
     private void jButton_FinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_FinalizarCompraActionPerformed
-        HistoricoFacturas facturas = CapturaFactura();
-        try {
-            String insertar = facturasNegocio.insertar(facturas);
-            if (insertar.equals("Error")) {
-                throw new TiendaExcepcion("Ocurrio un Error al ingresar el producto");
-            } else {
-                JOptionPane.showMessageDialog(this, "Factura Generada " + insertar + "Y guardada para futuras referencias", null, 1);
 
+        if (ValidarFormularioCarrito()) {
+            HistoricoFacturas facturas = CapturaFactura();
+            try {
+                String insertar = facturasNegocio.insertar(facturas);
+                if (insertar.equals("Error")) {
+                    throw new TiendaExcepcion("Ocurrio un Error al ingresar el producto");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Factura Generada " + insertar + " Y guardada para futuras referencias", null, 1);
+                }
+            } catch (TiendaExcepcion ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
             }
+            numeroOrden = facturas.getCodigoFactura();
+            fechaOrden = facturas.getHoraCompra();
+            fechaConFormato = fechaOrden.format(formatter);
+            JOptionPane.showMessageDialog(this, "Su compra se ha realizado con éxito " + numeroOrden
+                    + "\nCosto de la compra:        " + "₡" + suma
+                    + "\nCosto de envio:                 " + "₡" + sumaEnvio
+                    + "\nIVA:                                       " + "₡" + sumaIVA
+                    + "\nGran Total:                         " + "₡" + neto
+                    + "\n"
+                    + "\n"
+                    + "\n"
+                    + "Gracias por su Compra", null, -1);
 
-        } catch (TiendaExcepcion ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
+            llamarRecibo();
+            vaciarCarrito();
+            LimpiarCampos();
+            jTextField_Neto.setText("");
         }
-
-        JOptionPane.showMessageDialog(this, "Su compra se ha realizado con éxito"
-                + "\nCosto de la compra:        " + "₡" + suma
-                + "\nCosto de envio:                 " + "₡" + sumaEnvio
-                + "\nIVA:                                       " + "₡" + sumaIVA
-                + "\nGran Total:                         " + "₡" + neto
-                + "\n"
-                + "\n"
-                + "\n"
-                + "Gracias por su Compra", null, -1);
-
-        llamarRecibo();
-        vaciarCarrito();
-        LimpiarCampos();
-        jTextField_Neto.setText("");
     }//GEN-LAST:event_jButton_FinalizarCompraActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -649,17 +639,15 @@ public class JFrameTienda extends javax.swing.JFrame {
             }
         });
     }
-    
-    private void llamarRecibo(){
-            JFrameRecibo recibo = new JFrameRecibo(this);
+
+    private void llamarRecibo() {
+        JFrameRecibo recibo = new JFrameRecibo(this);
         recibo.setVisible(true);
         this.setVisible(false);
-
     }
 
     private double compraNeta() {
         int contar = jTable_Carrito.getRowCount();
-
         for (int i = 0; i < contar; i++) {
             suma = suma + Double.parseDouble(jTable_Carrito.getValueAt(i, 4).toString());
         }
@@ -671,17 +659,19 @@ public class JFrameTienda extends javax.swing.JFrame {
 
     @Override
     public String toString() {
-        
-        return "\t\tFactura\n"
-                + "\t\t\tNúmero de Factura" +jLabel_NumeroFactura.getText()
+
+        return "\t\t\tFactura\n"
+                + "\t\t\t\tNúmero de Factura:  " + numeroOrden
                 + "\n"
-                + "==================================" 
+                + "\t\t\t\t Fecha y Hora:      " + fechaConFormato
+                + "\n"
+                + "================================================"
                 + "\n"
                 + "Nombre: " + "\n"
                 + "Dirección:" + "\n"
                 + "Email:" + "\n"
                 + "Teléfono:" + "\n"
-                + "=================================="
+                + "================================================"
                 + "\n" + "\n"
                 + "Código\tPrecio Unitario\tCantidad\tTotal\tProducto"
                 + "\n"
@@ -693,11 +683,11 @@ public class JFrameTienda extends javax.swing.JFrame {
                 + "\t\t\tIVA(20%)              \t" + sumaIVA
                 + "\n"
                 + "\t\t\tTotal a pagar      \t" + neto
-                +"\n" 
-                +"\n"
-                +"\n"
-                +"\n"
-                +"Gracias Por Su Comprar";
+                + "\n"
+                + "\n"
+                + "\n"
+                + "\n"
+                + "Gracias Por Su Compra";
     }
 
     private void vaciarCarrito() {
@@ -709,25 +699,27 @@ public class JFrameTienda extends javax.swing.JFrame {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-
     }
 
     private boolean ValidarFormularioTienda() {
         boolean bandera = true;
-        String mensaje = "";
-        jLabel_Error.setVisible(false);
-        jLabel_Error.setText("");
-
         if ((Integer) jSpinner_CantCompra.getValue() <= 0) {
-            mensaje += "* La Cantidad no puede ser cero ";
+            JOptionPane.showMessageDialog(this, "La Cantidad no puede ser cero", null, 2);
             bandera = false;
         }
         if ((Integer) jSpinner_CantCompra.getValue() > cantidadDisponible) {
-            mensaje += "* La Cantidad no puede ser mayor a las existencias ";
+            JOptionPane.showMessageDialog(this, "La Cantidad no puede ser mayor a las existencias", null, 2);
             bandera = false;
         }
-        jLabel_Error.setVisible(true);
-        jLabel_Error.setText(mensaje);
+        return bandera;
+    }
+
+    private boolean ValidarFormularioCarrito() {
+        boolean bandera = true;
+        if (jTextField_Neto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El Cálculo del valor Neto de la compra no puede estar vacío", null, 2);
+            bandera = false;
+        }
         return bandera;
     }
 
@@ -780,11 +772,9 @@ public class JFrameTienda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel_Codigo;
     private javax.swing.JLabel jLabel_CodigoValor;
-    private javax.swing.JLabel jLabel_Error;
     private javax.swing.JLabel jLabel_Filtro;
     private javax.swing.JLabel jLabel_Fondo;
     private javax.swing.JLabel jLabel_Nombre;
-    private javax.swing.JLabel jLabel_NumFactura;
     private javax.swing.JLabel jLabel_NumeroFactura;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

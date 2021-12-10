@@ -347,6 +347,8 @@ public class JFrameInventario extends javax.swing.JFrame {
         }
 
     }
+    
+    
 
     private boolean ValidarFormularioInventario() {
         boolean bandera = true;

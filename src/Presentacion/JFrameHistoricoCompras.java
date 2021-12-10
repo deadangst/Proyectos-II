@@ -26,6 +26,7 @@ public class JFrameHistoricoCompras extends javax.swing.JFrame {
         facturasNegocio = new HistoricoFacturasNegocio();
         TableModel tableModel = this.completarHistoricoModel();
         jTable_Historico.setModel(tableModel);
+        
     }
 
     private TableModel completarHistoricoModel() {
