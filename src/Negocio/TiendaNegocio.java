@@ -1,4 +1,4 @@
-
+ 
 package Negocio;
 
 import AccesoDatos.ITiendaData;

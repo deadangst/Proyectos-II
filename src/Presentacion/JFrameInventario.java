@@ -83,10 +83,14 @@ public class JFrameInventario extends javax.swing.JFrame {
         jLabel_ErrorInv = new javax.swing.JLabel();
         jLabel_Codigo = new javax.swing.JLabel();
         jLabel_CodigoValor = new javax.swing.JLabel();
-        jButton_LlenarCombo = new javax.swing.JButton();
         jLabel_Fondo = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable_Inventario.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,7 +168,8 @@ public class JFrameInventario extends javax.swing.JFrame {
         getContentPane().add(jTextField_Cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 360, 240, -1));
 
         jComboBox_Cat.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox_Cat.setForeground(new java.awt.Color(102, 102, 102));
+        jComboBox_Cat.setForeground(new java.awt.Color(0, 51, 51));
+        jComboBox_Cat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "GPU", "Headset", "Laptop", "Monitor", "Mouse", "Parlantes", "Silla Gamer", "Teclado" }));
         jComboBox_Cat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_CatActionPerformed(evt);
@@ -224,18 +229,12 @@ public class JFrameInventario extends javax.swing.JFrame {
         jLabel_CodigoValor.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         getContentPane().add(jLabel_CodigoValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 430, 240, 30));
 
-        jButton_LlenarCombo.setBackground(new java.awt.Color(0, 102, 102));
-        jButton_LlenarCombo.setText("Obtener Categorías");
-        jButton_LlenarCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_LlenarComboActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton_LlenarCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 390, -1, -1));
-
         jLabel_Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/1230px BG.png"))); // NOI18N
         jLabel_Fondo.setText("jLabel1");
         getContentPane().add(jLabel_Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 720));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 550, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -269,10 +268,6 @@ public class JFrameInventario extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox_CatActionPerformed
 
-    private void jButton_LlenarComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LlenarComboActionPerformed
-        llenarCombo();
-    }//GEN-LAST:event_jButton_LlenarComboActionPerformed
-
     private void jTable_InventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_InventarioMouseClicked
         int seleccionada = jTable_Inventario.rowAtPoint(evt.getPoint());
         jLabel_CodigoValor.setText(String.valueOf(jTable_Inventario.getValueAt(seleccionada, 0)));
@@ -280,7 +275,7 @@ public class JFrameInventario extends javax.swing.JFrame {
         jTextField_Precio.setText(String.valueOf(jTable_Inventario.getValueAt(seleccionada, 2)));
         jTextField_Cantidad.setText(String.valueOf(jTable_Inventario.getValueAt(seleccionada, 3)));
         jComboBox_Cat.setSelectedItem(String.valueOf(jTable_Inventario.getValueAt(seleccionada, 4)));
-        
+
     }//GEN-LAST:event_jTable_InventarioMouseClicked
 
     private void jButton_LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LimpiarActionPerformed
@@ -329,6 +324,12 @@ public class JFrameInventario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_EliminarProdActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFramePrincipalAdmin jfPrincipalAdmin = new JFramePrincipalAdmin();
+        jfPrincipalAdmin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
+
     private void llenarCombo() {
         String filePath = "C:\\archivos\\categoria.txt";
         File file = new File(filePath);
@@ -347,8 +348,6 @@ public class JFrameInventario extends javax.swing.JFrame {
         }
 
     }
-    
-    
 
     private boolean ValidarFormularioInventario() {
         boolean bandera = true;
@@ -381,8 +380,8 @@ public class JFrameInventario extends javax.swing.JFrame {
 
     private Inventario CapturaProducto() {
         Inventario producto = new Inventario();
-        String valor = (String)jComboBox_Cat.getSelectedItem();
-        
+        String valor = (String) jComboBox_Cat.getSelectedItem();
+
         producto.setCodigo(jLabel_CodigoValor.getText());
         producto.setNombre(jTextField_NombreProd.getText());
         producto.setPrecio(Double.parseDouble(jTextField_Precio.getText()));
@@ -431,7 +430,7 @@ public class JFrameInventario extends javax.swing.JFrame {
     private javax.swing.JButton jButton_AgregarProd;
     private javax.swing.JButton jButton_EliminarProd;
     private javax.swing.JButton jButton_Limpiar;
-    private javax.swing.JButton jButton_LlenarCombo;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox_Cat;
     private javax.swing.JLabel jLabel_Cantidad;
     private javax.swing.JLabel jLabel_Cat;

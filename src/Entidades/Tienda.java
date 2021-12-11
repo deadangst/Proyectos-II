@@ -16,6 +16,7 @@ public class Tienda {
     private LocalDateTime horaCompra = LocalDateTime.now();
     private String codigo;
     private String usuario;
+    private String categoría;
     
 
     public String getNombre() {
@@ -82,17 +83,34 @@ public class Tienda {
         this.usuario = usuario;
     }
 
+    public String getCategoría() {
+        return categoría;
+    }
+
+    public void setCategoría(String categoría) {
+        this.categoría = categoría;
+    }
+
     
     public Tienda() {
     }
 
-    public Tienda(String nombre, double precio, int cantidad, double total, String codigo) {
+    public Tienda(String nombre, double precio, int cantidad, double total, String codigo, String categoría) {
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;
         this.total = total;
         this.codigo = codigo;
+        this.categoría = categoría;
     }
+
+//    public Tienda(String nombre, double precio, int cantidad, double total, String codigo) {
+//        this.nombre = nombre;
+//        this.precio = precio;
+//        this.cantidad = cantidad;
+//        this.total = total;
+//        this.codigo = codigo;
+//    }
 
     @Override
     public String toString() {

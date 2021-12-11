@@ -59,6 +59,7 @@ public class TiendaData implements ITiendaData {
         tienda.setPrecio(Double.parseDouble(datosTienda[2]));
         tienda.setCantidad(Integer.parseInt(datosTienda[3]));
         tienda.setTotal(Double.parseDouble(datosTienda[4]));
+        tienda.setCategoría(datosTienda[5]);
         return tienda;
     }
 
@@ -69,6 +70,7 @@ public class TiendaData implements ITiendaData {
         lineaTienda.append(tienda.getPrecio()).append(UtilidadesArchivos.TOKEN);
         lineaTienda.append(tienda.getCantidad()).append(UtilidadesArchivos.TOKEN);
         lineaTienda.append(tienda.getTotal()).append(UtilidadesArchivos.TOKEN);
+        lineaTienda.append(tienda.getCategoría()).append(UtilidadesArchivos.TOKEN);
         return lineaTienda.toString();
     }
 

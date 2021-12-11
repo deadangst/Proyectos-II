@@ -140,7 +140,7 @@ public class JFrameLogin extends javax.swing.JFrame {
             if (validarFormulario()) {
                 boolean validaLogin = loginNegocio.Validar(capturarLogin());
                 if (validaLogin) {
-                    JFramePrincialCliente jfPrincipalCliente = new JFramePrincialCliente();
+                    JFramePrincipalCliente jfPrincipalCliente = new JFramePrincipalCliente();
                     jfPrincipalCliente.setVisible(true);
                     this.setVisible(false);
                 } else {

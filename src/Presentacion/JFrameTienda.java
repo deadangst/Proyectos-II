@@ -6,6 +6,7 @@
 package Presentacion;
 
 import AccesoDatos.UtilidadesArchivos;
+import Entidades.Excepciones.InventarioExcepcion;
 import Entidades.Excepciones.TiendaExcepcion;
 import Entidades.Inventario;
 import Entidades.Tienda;
@@ -57,12 +58,15 @@ public class JFrameTienda extends javax.swing.JFrame {
     private LocalDateTime fechaOrden;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
     private String fechaConFormato = "";
+    private int actualizarStock = 0;
+    private int sumarStock = 0;
+    private int restarStock = 0;
 
     public JFrameTienda() {
         initComponents();
         inventarioNegocio = new InventarioNegocio();
-        TableModel tableModel = this.completarCatalogoModel();
-        jTable_Catalogo.setModel(tableModel);
+        TableModel tableModelCatalogo = this.completarCatalogoModel();
+        jTable_Catalogo.setModel(tableModelCatalogo);
         tiendaNegocio = new TiendaNegocio();
         TableModel tableModelTienda = this.completarTiendaModel();
         jTable_Carrito.setModel(tableModelTienda);
@@ -94,7 +98,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private TableModel completarTiendaModel() {
         try {
             List<Tienda> listaTienda = tiendaNegocio.consultarTodasLasVentas();
-            Object[] columnas = new Object[]{"Código", "Nombre", "Precio", "Cantidad", "Total"};
+            Object[] columnas = new Object[]{"Código", "Nombre", "Precio", "Cantidad", "Total", "Categoría"};
             Object[][] datos = new Object[listaTienda.size()][columnas.length];
             for (int i = 0; i < listaTienda.size(); i++) {
                 datos[i][0] = listaTienda.get(i).getCodigo();
@@ -102,6 +106,7 @@ public class JFrameTienda extends javax.swing.JFrame {
                 datos[i][2] = listaTienda.get(i).getPrecio();
                 datos[i][3] = listaTienda.get(i).getCantidad();
                 datos[i][4] = listaTienda.get(i).getTotal();
+                datos[i][5] = listaTienda.get(i).getCategoría();
             }
             for (Tienda dato : listaTienda) {
                 detalleDatos += dato + "\n";
@@ -139,6 +144,8 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTxt_Filtro = new javax.swing.JTextField();
         jLabel_Filtro = new javax.swing.JLabel();
         jSpinner_CantCompra = new javax.swing.JSpinner();
+        jLabel_Categoría = new javax.swing.JLabel();
+        jTextField_Categoría = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable_Carrito = new javax.swing.JTable();
@@ -258,6 +265,11 @@ public class JFrameTienda extends javax.swing.JFrame {
 
         jSpinner_CantCompra.setToolTipText("");
 
+        jLabel_Categoría.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_Categoría.setText("Categoría");
+
+        jTextField_Categoría.setBackground(new java.awt.Color(0, 153, 153));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -271,30 +283,34 @@ public class JFrameTienda extends javax.swing.JFrame {
                         .addComponent(jTxt_Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel_Nombre)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSpinner_CantCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField_PrecioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel_Categoría)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField_Categoría)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel_Codigo)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel_CodigoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton_AgregarCarrito)
-                            .addComponent(jButton_LimpiaCarrito)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel_Nombre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSpinner_CantCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField_PrecioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel_Codigo)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel_CodigoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton_LimpiaCarrito)))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +340,9 @@ public class JFrameTienda extends javax.swing.JFrame {
                         .addComponent(jLabel_Codigo)
                         .addComponent(jLabel_Nombre)
                         .addComponent(jTextField_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSpinner_CantCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jSpinner_CantCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_Categoría)
+                        .addComponent(jTextField_Categoría, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
@@ -338,17 +356,17 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTable_Carrito.setForeground(new java.awt.Color(51, 51, 51));
         jTable_Carrito.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Precio", "Cantidad", "Total"
+                "Código", "Nombre", "Precio", "Cantidad", "Total", "Categoría"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -369,6 +387,7 @@ public class JFrameTienda extends javax.swing.JFrame {
             jTable_Carrito.getColumnModel().getColumn(2).setResizable(false);
             jTable_Carrito.getColumnModel().getColumn(3).setResizable(false);
             jTable_Carrito.getColumnModel().getColumn(4).setResizable(false);
+            jTable_Carrito.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jLabel_NumeroFactura.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -471,8 +490,8 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTextField_Nombre.setText(String.valueOf(jTable_Catalogo.getValueAt(seleccionada, 1)));
         jTextField_PrecioCompra.setText(String.valueOf(jTable_Catalogo.getValueAt(seleccionada, 2)));
         jLabel_CodigoValor.setText(String.valueOf(jTable_Catalogo.getValueAt(seleccionada, 0)));
-
         cantidadDisponible = Integer.parseInt(String.valueOf(jTable_Catalogo.getValueAt(seleccionada, 3)));
+        jTextField_Categoría.setText(String.valueOf(jTable_Catalogo.getValueAt(seleccionada, 4)));
 
     }//GEN-LAST:event_jTable_CatalogoMouseClicked
 
@@ -486,15 +505,18 @@ public class JFrameTienda extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Producto agregado al carrito " + insertar, null, 1);
                     RefrescarTabla();
+                    disminuyeInventario();
+                    actualizarInventario();
                     LimpiarCampos();
                 }
-
             } catch (TiendaExcepcion ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
             }
         }
+
+
     }//GEN-LAST:event_jButton_AgregarCarritoActionPerformed
 
     private void jButton_LimpiaCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LimpiaCarritoActionPerformed
@@ -524,6 +546,8 @@ public class JFrameTienda extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Producto eliminado del carrito " + eliminar, null, 1);
                 RefrescarTabla();
+                devuelveInventario();
+                actualizarInventario();
                 LimpiarCampos();
             }
 
@@ -541,6 +565,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTextField_Nombre.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 1)));
         jTextField_PrecioCompra.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 2)));
         jSpinner_CantCompra.setValue(Integer.parseInt(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 3))));
+        jTextField_Categoría.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 5)));
     }//GEN-LAST:event_jTable_CarritoMouseClicked
 
     private void jButton_ActualizarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarCantidadActionPerformed
@@ -560,7 +585,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
         }
-        //jTextField_Neto.setText("");
+
     }//GEN-LAST:event_jButton_ActualizarCantidadActionPerformed
 
     private void jButton_FinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_FinalizarCompraActionPerformed
@@ -600,7 +625,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_FinalizarCompraActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFramePrincialCliente jfPrincipalCliente = new JFramePrincialCliente();
+        JFramePrincipalCliente jfPrincipalCliente = new JFramePrincipalCliente();
         jfPrincipalCliente.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
@@ -701,6 +726,16 @@ public class JFrameTienda extends javax.swing.JFrame {
         }
     }
 
+    public void disminuyeInventario() {
+        restarStock = (cantidadDisponible - ((Integer) jSpinner_CantCompra.getValue()));
+        actualizarStock = restarStock;
+    }
+
+    public void devuelveInventario() {
+        sumarStock = (actualizarStock + ((Integer) jSpinner_CantCompra.getValue()));
+        actualizarStock = sumarStock;
+    }
+
     private boolean ValidarFormularioTienda() {
         boolean bandera = true;
         if ((Integer) jSpinner_CantCompra.getValue() <= 0) {
@@ -727,10 +762,21 @@ public class JFrameTienda extends javax.swing.JFrame {
         Tienda tienda = new Tienda();
         tienda.setCodigo(jLabel_CodigoValor.getText());
         tienda.setNombre(jTextField_Nombre.getText());
-        tienda.setPrecio(Double.parseDouble(jTextField_PrecioCompra.getText()));
+        tienda.setPrecio(Double.parseDouble(String.valueOf(jTextField_PrecioCompra.getText())));
         tienda.setCantidad((Integer) jSpinner_CantCompra.getValue());
         tienda.setTotal(Double.parseDouble(jTextField_PrecioCompra.getText()) * ((Integer) jSpinner_CantCompra.getValue()));
+        tienda.setCategoría(jTextField_Categoría.getText());
         return tienda;
+    }
+
+    private Inventario CapturaInventario() {
+        Inventario producto = new Inventario();
+        producto.setCodigo(jLabel_CodigoValor.getText());
+        producto.setNombre(jTextField_Nombre.getText());
+        producto.setPrecio(Double.parseDouble(String.valueOf(jTextField_PrecioCompra.getText())));
+        producto.setCantidad(actualizarStock);
+        producto.setCategoria(jTextField_Categoría.getText());
+        return producto;
     }
 
     private HistoricoFacturas CapturaFactura() {
@@ -745,9 +791,34 @@ public class JFrameTienda extends javax.swing.JFrame {
         return facturas;
     }
 
+    private void actualizarInventario() {
+        Inventario producto = CapturaInventario();
+        try {
+            String actualizar = inventarioNegocio.actualizar(producto);
+            if (actualizar.equals("Error")) {
+                throw new InventarioExcepcion("Ocurrio un Error al ingresar el producto");
+            } else {
+                JOptionPane.showMessageDialog(this, "Inventario actualizado, código #" + actualizar, null, 1);
+                RefrescarTablaInventario();
+                LimpiarCampos();
+            }
+
+        } catch (InventarioExcepcion ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), null, 2);
+        }
+
+    }
+
     private void RefrescarTabla() {
         TableModel tableModelTienda = this.completarTiendaModel();
         jTable_Carrito.setModel(tableModelTienda);
+    }
+
+    private void RefrescarTablaInventario() {
+        TableModel tableModelCatalogo = this.completarCatalogoModel();
+        jTable_Catalogo.setModel(tableModelCatalogo);
     }
 
     private void LimpiarCampos() {
@@ -755,6 +826,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         jSpinner_CantCompra.setValue(0);
         jTextField_PrecioCompra.setText("");
         jLabel_CodigoValor.setText("");
+        jLabel_Categoría.setText("");
     }
 
 
@@ -770,6 +842,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel_Categoría;
     private javax.swing.JLabel jLabel_Codigo;
     private javax.swing.JLabel jLabel_CodigoValor;
     private javax.swing.JLabel jLabel_Filtro;
@@ -783,6 +856,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner_CantCompra;
     private javax.swing.JTable jTable_Carrito;
     private javax.swing.JTable jTable_Catalogo;
+    private javax.swing.JTextField jTextField_Categoría;
     private javax.swing.JTextField jTextField_Neto;
     private javax.swing.JTextField jTextField_Nombre;
     private javax.swing.JTextField jTextField_PrecioCompra;

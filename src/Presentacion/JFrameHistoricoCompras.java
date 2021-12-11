@@ -126,7 +126,7 @@ public class JFrameHistoricoCompras extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFramePrincialCliente jfPrincipalCliente = new JFramePrincialCliente();
+        JFramePrincipalCliente jfPrincipalCliente = new JFramePrincipalCliente();
         jfPrincipalCliente.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
