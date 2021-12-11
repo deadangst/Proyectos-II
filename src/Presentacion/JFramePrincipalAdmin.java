@@ -5,15 +5,17 @@
  */
 package Presentacion;
 
+//import Entidades.Login;
+import Entidades.Usuarios;
+
 /**
  *
  * @author deada
  */
 public class JFramePrincipalAdmin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFramePrincipalAdmin
-     */
+    private Usuarios login;
+
     public JFramePrincipalAdmin() {
         initComponents();
     }
@@ -30,14 +32,16 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu_Salir = new javax.swing.JMenu();
         MenuSalir = new javax.swing.JCheckBoxMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jMenu_Admin = new javax.swing.JMenu();
         MenuUsuarios = new javax.swing.JCheckBoxMenuItem();
-        jMenu3 = new javax.swing.JMenu();
         Menu_Inventario = new javax.swing.JCheckBoxMenuItem();
+        jMenu_IrTienda = new javax.swing.JMenu();
+        MenuItem_IrTienda = new javax.swing.JCheckBoxMenuItem();
         jMenu_HistorialCompras = new javax.swing.JMenu();
         Menu_Historial = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel_Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/1230px BG.png"))); // NOI18N
@@ -57,7 +61,7 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu_Salir);
 
-        jMenu2.setText("Mantenimiento de Usuarios");
+        jMenu_Admin.setText("Opciones Administrador");
 
         MenuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.SHIFT_MASK));
         MenuUsuarios.setSelected(true);
@@ -67,11 +71,7 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
                 MenuUsuariosActionPerformed(evt);
             }
         });
-        jMenu2.add(MenuUsuarios);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Mantenimiento de Inventario");
+        jMenu_Admin.add(MenuUsuarios);
 
         Menu_Inventario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK));
         Menu_Inventario.setSelected(true);
@@ -81,9 +81,23 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
                 Menu_InventarioActionPerformed(evt);
             }
         });
-        jMenu3.add(Menu_Inventario);
+        jMenu_Admin.add(Menu_Inventario);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenu_Admin);
+
+        jMenu_IrTienda.setText("Ir a la Tienda");
+
+        MenuItem_IrTienda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.SHIFT_MASK));
+        MenuItem_IrTienda.setSelected(true);
+        MenuItem_IrTienda.setText("Ir a la Tienda");
+        MenuItem_IrTienda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_IrTiendaActionPerformed(evt);
+            }
+        });
+        jMenu_IrTienda.add(MenuItem_IrTienda);
+
+        jMenuBar1.add(jMenu_IrTienda);
 
         jMenu_HistorialCompras.setText("Historial de Compras");
 
@@ -126,6 +140,12 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_Menu_HistorialActionPerformed
 
+    private void MenuItem_IrTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_IrTiendaActionPerformed
+        JFrameTienda jTienda = new JFrameTienda();
+        jTienda.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_MenuItem_IrTiendaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -161,16 +181,40 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         });
     }
 
+    public Usuarios getLogin() {
+        return login;
+    }
+
+    public void setLogin(Usuarios login) {
+        this.login = login;
+        if (this.login.getTipoUsuario().equals("Administrador")) {
+            this.jMenu_Admin.setVisible(true);
+        }
+        if (this.login.getTipoUsuario().equals("Gerente")) {
+            this.jMenu_Admin.setVisible(true);
+        }
+        if (this.login.getTipoUsuario().equals("Vendedor")) {
+            this.jMenu_Admin.setVisible(true);
+        }
+        if (this.login.getTipoUsuario().equals("Cliente")) {
+            this.jMenu_Admin.setVisible(false);
+        } 
+//        else {
+//            this.jMenu_Admin.setVisible(false);
+//        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem MenuItem_IrTienda;
     private javax.swing.JCheckBoxMenuItem MenuSalir;
     private javax.swing.JCheckBoxMenuItem MenuUsuarios;
     private javax.swing.JCheckBoxMenuItem Menu_Historial;
     private javax.swing.JCheckBoxMenuItem Menu_Inventario;
     private javax.swing.JLabel jLabel_Fondo;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenu_Admin;
     private javax.swing.JMenu jMenu_HistorialCompras;
+    private javax.swing.JMenu jMenu_IrTienda;
     private javax.swing.JMenu jMenu_Salir;
     // End of variables declaration//GEN-END:variables
 }

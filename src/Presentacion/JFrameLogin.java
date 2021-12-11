@@ -5,9 +5,9 @@
  */
 package Presentacion;
 
-
 import Entidades.Excepciones.LoginExcepcion;
-import Entidades.Login;
+
+import Entidades.Usuarios;
 import Negocio.LoginNegocio;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -138,14 +138,18 @@ public class JFrameLogin extends javax.swing.JFrame {
     private void Ingresar() {
         try {
             if (validarFormulario()) {
-                boolean validaLogin = loginNegocio.Validar(capturarLogin());
+                Usuarios usuario = capturarLogin();
+                Boolean validaLogin = loginNegocio.Validar(usuario);
                 if (validaLogin) {
-                    JFramePrincipalCliente jfPrincipalCliente = new JFramePrincipalCliente();
-                    jfPrincipalCliente.setVisible(true);
+                    usuario = loginNegocio.Consultar(usuario.getUsuario());
+                    JFramePrincipalAdmin jfPrincipal = new JFramePrincipalAdmin();
+                    jfPrincipal.setLogin(usuario);
+                    jfPrincipal.setVisible(true);
                     this.setVisible(false);
                 } else {
                     throw new LoginExcepcion("Usuario o Password invalido");
                 }
+
             }
         } catch (LoginExcepcion e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), null, 0);
@@ -199,8 +203,8 @@ public class JFrameLogin extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1Usuario;
     // End of variables declaration//GEN-END:variables
 
-    private Login capturarLogin() {
-        Login login = new Login();
+    private Usuarios capturarLogin() {
+        Usuarios login = new Usuarios();
         login.setPassword(jPasswordField_Password.getText());
         login.setUsuario(jTextField1Usuario.getText());
         return login;

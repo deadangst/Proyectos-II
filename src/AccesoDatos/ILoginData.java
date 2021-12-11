@@ -13,5 +13,6 @@ import Entidades.*;
  * @author Usuario
  */
 public interface ILoginData {
-    Boolean Validar( Login login) throws LoginExcepcion, Exception;
+    Boolean Validar( Usuarios login) throws LoginExcepcion, Exception;
+    Usuarios consultar(String user) throws LoginExcepcion, Exception;
 }

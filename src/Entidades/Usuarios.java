@@ -48,6 +48,18 @@ public class Usuarios {
         this.password = password;
     }
 
+    public Usuarios(String usuario, String password) {
+        this.usuario = usuario;
+        this.password = password;
+    }
+
+    public Usuarios(String tipoUsuario, String nombre, String usuario, String password) {
+        this.tipoUsuario = tipoUsuario;
+        this.nombre = nombre;
+        this.usuario = usuario;
+        this.password = password;
+    }
+
     
 
    

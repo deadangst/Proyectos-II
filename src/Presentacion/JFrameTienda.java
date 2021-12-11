@@ -625,7 +625,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_FinalizarCompraActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFramePrincipalCliente jfPrincipalCliente = new JFramePrincipalCliente();
+        JFramePrincipalAdmin jfPrincipalCliente = new JFramePrincipalAdmin();
         jfPrincipalCliente.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing

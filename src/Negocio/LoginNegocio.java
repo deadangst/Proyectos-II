@@ -10,18 +10,17 @@ import Entidades.Excepciones.*;
 import Entidades.*;
 
 
-
-/**
- *
- * @author Usuario
- */
 public class LoginNegocio {
     private final ILoginData loginData;
 
     public LoginNegocio() {
         this.loginData = new LoginData();
     }
-    public Boolean Validar (Login login) throws LoginExcepcion, Exception{
+    public Boolean Validar (Usuarios login) throws LoginExcepcion, Exception{
     return loginData.Validar(login);
+    }
+    
+        public Usuarios Consultar(String usuario) throws LoginExcepcion, Exception{
+        return loginData.consultar(usuario);
     }
 }
