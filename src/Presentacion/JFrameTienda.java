@@ -10,6 +10,7 @@ import Entidades.Excepciones.InventarioExcepcion;
 import Entidades.Excepciones.TiendaExcepcion;
 import Entidades.Inventario;
 import Entidades.Tienda;
+import Entidades.Usuarios;
 import Negocio.InventarioNegocio;
 import Negocio.TiendaNegocio;
 import java.awt.event.KeyAdapter;
@@ -47,7 +48,9 @@ public class JFrameTienda extends javax.swing.JFrame {
     private final InventarioNegocio inventarioNegocio;
     private final TiendaNegocio tiendaNegocio;
     private final HistoricoFacturasNegocio facturasNegocio;
+    private JFramePrincipalAdmin usuario;
     private int cantidadDisponible = 0;
+    private int cantidadEnCarrito = 0;
     private double neto = 0;
     private double suma = 0;
     private double sumaEnvio = 0;
@@ -61,6 +64,7 @@ public class JFrameTienda extends javax.swing.JFrame {
     private int actualizarStock = 0;
     private int sumarStock = 0;
     private int restarStock = 0;
+    List<Tienda> listaTienda;
 
     public JFrameTienda() {
         initComponents();
@@ -71,6 +75,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         TableModel tableModelTienda = this.completarTiendaModel();
         jTable_Carrito.setModel(tableModelTienda);
         facturasNegocio = new HistoricoFacturasNegocio();
+
     }
 
     private TableModel completarCatalogoModel() {
@@ -97,7 +102,7 @@ public class JFrameTienda extends javax.swing.JFrame {
 
     private TableModel completarTiendaModel() {
         try {
-            List<Tienda> listaTienda = tiendaNegocio.consultarTodasLasVentas();
+            this.listaTienda = tiendaNegocio.consultarTodasLasVentas();
             Object[] columnas = new Object[]{"Código", "Nombre", "Precio", "Cantidad", "Total", "Categoría"};
             Object[][] datos = new Object[listaTienda.size()][columnas.length];
             for (int i = 0; i < listaTienda.size(); i++) {
@@ -108,14 +113,15 @@ public class JFrameTienda extends javax.swing.JFrame {
                 datos[i][4] = listaTienda.get(i).getTotal();
                 datos[i][5] = listaTienda.get(i).getCategoría();
             }
-            for (Tienda dato : listaTienda) {
-                detalleDatos += dato + "\n";
-            }
+//            for (Tienda dato : listaTienda) {
+//                detalleDatos += dato + "\n";
+//            }
             DefaultTableModel model = new DefaultTableModel(datos, columnas);
             return model;
         } catch (Exception ex) {
             Logger.getLogger(JFrameInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return null;
     }
 
@@ -504,6 +510,7 @@ public class JFrameTienda extends javax.swing.JFrame {
                     throw new TiendaExcepcion("Ocurrio un Error al ingresar el producto");
                 } else {
                     JOptionPane.showMessageDialog(this, "Producto agregado al carrito " + insertar, null, 1);
+
                     RefrescarTabla();
                     disminuyeInventario();
                     actualizarInventario();
@@ -566,6 +573,7 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTextField_PrecioCompra.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 2)));
         jSpinner_CantCompra.setValue(Integer.parseInt(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 3))));
         jTextField_Categoría.setText(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 5)));
+        cantidadEnCarrito = Integer.parseInt(String.valueOf(jTable_Carrito.getValueAt(seleccionada, 3)));
     }//GEN-LAST:event_jTable_CarritoMouseClicked
 
     private void jButton_ActualizarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarCantidadActionPerformed
@@ -576,6 +584,14 @@ public class JFrameTienda extends javax.swing.JFrame {
                 throw new TiendaExcepcion("Ocurrio un Error al ingresar el producto");
             } else {
                 JOptionPane.showMessageDialog(this, "Producto Actualizado correctamente, código #" + actualizar, null, 1);
+                if((Integer) jSpinner_CantCompra.getValue()> cantidadEnCarrito){
+                disminuyeInventario();
+                actualizarInventario();
+                }
+                if((Integer) jSpinner_CantCompra.getValue()< cantidadEnCarrito){
+                devuelveInventario();
+                actualizarInventario();
+                }
                 RefrescarTabla();
                 LimpiarCampos();
             }
@@ -616,7 +632,7 @@ public class JFrameTienda extends javax.swing.JFrame {
                     + "\n"
                     + "\n"
                     + "Gracias por su Compra", null, -1);
-
+            detallesVenta();
             llamarRecibo();
             vaciarCarrito();
             LimpiarCampos();
@@ -692,10 +708,10 @@ public class JFrameTienda extends javax.swing.JFrame {
                 + "\n"
                 + "================================================"
                 + "\n"
-                + "Nombre: " + "\n"
-                + "Dirección:" + "\n"
-                + "Email:" + "\n"
-                + "Teléfono:" + "\n"
+                + "Nombre: " + usuario.nombre + " " + usuario.apellido + "\n"
+                + "Dirección: " + usuario.calle + ", " + usuario.ciudad + ", " + usuario.provincia + ", " + usuario.pais + "\n"
+                + "Email: " + usuario.email + "\n"
+                + "Teléfono: " + usuario.telefono + "\n"
                 + "================================================"
                 + "\n" + "\n"
                 + "Código\tPrecio Unitario\tCantidad\tTotal\tProducto"
@@ -734,6 +750,13 @@ public class JFrameTienda extends javax.swing.JFrame {
     public void devuelveInventario() {
         sumarStock = (actualizarStock + ((Integer) jSpinner_CantCompra.getValue()));
         actualizarStock = sumarStock;
+    }
+
+    public void detallesVenta() {
+        for (Tienda dato : listaTienda) {
+            detalleDatos += dato + "\n";
+        }
+
     }
 
     private boolean ValidarFormularioTienda() {
@@ -781,8 +804,9 @@ public class JFrameTienda extends javax.swing.JFrame {
 
     private HistoricoFacturas CapturaFactura() {
         HistoricoFacturas facturas = new HistoricoFacturas();
+
         facturas.setCodigoFactura(jLabel_NumeroFactura.getText());
-        facturas.setUsuario("Steven Vega");
+        facturas.setUsuario(usuario.user);
         facturas.setTotal(suma);
         facturas.setCostoEnvio(sumaEnvio);
         facturas.setIva(sumaIVA);

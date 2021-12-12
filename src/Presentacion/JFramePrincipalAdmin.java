@@ -7,6 +7,7 @@ package Presentacion;
 
 //import Entidades.Login;
 import Entidades.Usuarios;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +16,15 @@ import Entidades.Usuarios;
 public class JFramePrincipalAdmin extends javax.swing.JFrame {
 
     private Usuarios login;
+    static String user;
+    static String nombre;
+    static String apellido;
+    static int telefono;
+    static String email;
+    static String calle;
+    static String ciudad;
+    static String provincia;
+    static String pais;
 
     public JFramePrincipalAdmin() {
         initComponents();
@@ -198,11 +208,24 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         }
         if (this.login.getTipoUsuario().equals("Cliente")) {
             this.jMenu_Admin.setVisible(false);
-        } 
-//        else {
-//            this.jMenu_Admin.setVisible(false);
-//        }
-    }
+            
+        }       
+        user = this.login.getUsuario();
+        nombre = this.login.getNombre();
+        apellido = this.login.getApellido();
+        calle = this.login.getCalle();
+        ciudad = this.login.getCiudad();
+        provincia = this.login.getProvincia();
+        pais = this.login.getPais();
+        telefono = this.login.getNumeroTelefonico();
+        email = this.login.getCorreoElectronico();
+        
+        
+        
+    }   
+
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem MenuItem_IrTienda;

@@ -30,7 +30,11 @@ public class JFrameRecibo extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jText_Recibo = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -53,6 +57,12 @@ public class JFrameRecibo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFrameLogin frameLogin = new JFrameLogin();
+        frameLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

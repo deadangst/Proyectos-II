@@ -10,7 +10,7 @@ import Entidades.Excepciones.LoginExcepcion;
 import Entidades.Usuarios;
 import Negocio.LoginNegocio;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
+
 
 /**
  *
@@ -32,32 +32,24 @@ public class JFrameLogin extends javax.swing.JFrame {
         boolean bandera = true;
         String mensaje = "";
         if (jTextField1Usuario.getText().isEmpty()) {
-            mensaje += "Debe ingresar un usuario\n";
-            bandera = false;
-
-        }
-        if (jPasswordField_Password.getText().isEmpty()) {
-            mensaje += "Debe ingresar la contraseña";
+            JOptionPane.showMessageDialog(this, "El Usuario no puede estar vacío", null, 2);
             bandera = false;
         }
         if (jTextField1Usuario.getText().length() < 3) {
-            mensaje += "El usuario debe tener al menos 3 caracteres\n";
+           JOptionPane.showMessageDialog(this, "El Usuario tiene que ser mayor a 3 caracteres", null, 2);
             bandera = false;
         }
         if (jPasswordField_Password.getText().isEmpty()) {
-            mensaje += "Debe ingresar un password\n";
+            JOptionPane.showMessageDialog(this, "El Password no puede estar vacío", null, 2);
             bandera = false;
-        } else if (jPasswordField_Password.getText().length() < 5) {
-            mensaje += "El password debe tener al menos 5 caracteres";
+        } else if (jPasswordField_Password.getText().length() < 6) {
+            JOptionPane.showMessageDialog(this, "El Password tiene que ser mayor a 6 caracteres", null, 2);
             bandera = false;
         }
-
         if (!mensaje.isEmpty()) {
             JOptionPane.showMessageDialog(this, mensaje, null, 0);
         }
-
         return bandera;
-
     }
 
     /**
@@ -71,7 +63,7 @@ public class JFrameLogin extends javax.swing.JFrame {
         jLabel1Usuario = new javax.swing.JLabel();
         jLabel2Password = new javax.swing.JLabel();
         jTextField1Usuario = new javax.swing.JTextField();
-        jPasswordField_Password = new javax.swing.JTextField();
+        jPasswordField_Password = new javax.swing.JPasswordField();
         jButton1Ingresar = new javax.swing.JButton();
         jButton2Salir = new javax.swing.JButton();
         jLabel_Fondo = new javax.swing.JLabel();
@@ -89,14 +81,10 @@ public class JFrameLogin extends javax.swing.JFrame {
         jLabel2Password.setForeground(new java.awt.Color(0, 51, 51));
         jLabel2Password.setText("Password");
         getContentPane().add(jLabel2Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 241, -1, -1));
-        getContentPane().add(jTextField1Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 165, 153, -1));
+        getContentPane().add(jTextField1Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 165, 154, -1));
 
-        jPasswordField_Password.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPasswordField_PasswordKeyPressed(evt);
-            }
-        });
-        getContentPane().add(jPasswordField_Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 235, 153, -1));
+        jPasswordField_Password.setText("jPasswordField1");
+        getContentPane().add(jPasswordField_Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 230, 154, -1));
 
         jButton1Ingresar.setBackground(new java.awt.Color(0, 102, 102));
         jButton1Ingresar.setText("Ingresar");
@@ -126,12 +114,6 @@ public class JFrameLogin extends javax.swing.JFrame {
         Ingresar();
     }//GEN-LAST:event_jButton1IngresarActionPerformed
 
-    private void jPasswordField_PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField_PasswordKeyPressed
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            Ingresar();
-        }
-    }//GEN-LAST:event_jPasswordField_PasswordKeyPressed
-
     private void jButton2SalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton2SalirKeyPressed
         System.exit(0);
     }//GEN-LAST:event_jButton2SalirKeyPressed
@@ -145,8 +127,8 @@ public class JFrameLogin extends javax.swing.JFrame {
                     JFramePrincipalAdmin jfPrincipal = new JFramePrincipalAdmin();
                     jfPrincipal.setLogin(usuario);
                     jfPrincipal.setVisible(true);
-                    this.setVisible(false);
-                } else {
+                    this.setVisible(false);                   
+                }else {
                     throw new LoginExcepcion("Usuario o Password invalido");
                 }
 
@@ -199,7 +181,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1Usuario;
     private javax.swing.JLabel jLabel2Password;
     private javax.swing.JLabel jLabel_Fondo;
-    private javax.swing.JTextField jPasswordField_Password;
+    private javax.swing.JPasswordField jPasswordField_Password;
     private javax.swing.JTextField jTextField1Usuario;
     // End of variables declaration//GEN-END:variables
 

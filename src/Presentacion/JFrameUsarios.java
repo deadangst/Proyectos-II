@@ -44,33 +44,20 @@ public class JFrameUsarios extends javax.swing.JFrame {
             Object[][] datos = new Object[listaUsuarios.size()][columnas.length];
             for (int i = 0; i < listaUsuarios.size(); i++) {
                 datos[i][0] = listaUsuarios.get(i).getNombre();
-
                 datos[i][1] = listaUsuarios.get(i).getApellido();
-
                 datos[i][2] = listaUsuarios.get(i).getIdentificacion();
-
                 datos[i][3] = listaUsuarios.get(i).getNumeroTelefonico();
-
                 datos[i][4] = listaUsuarios.get(i).getTipoUsuario();
-
                 datos[i][5] = listaUsuarios.get(i).getCorreoElectronico();
-
                 datos[i][6] = listaUsuarios.get(i).getUsuario();
-
                 datos[i][7] = listaUsuarios.get(i).getPassword();
-
                 datos[i][8] = listaUsuarios.get(i).getPais();
-
                 datos[i][9] = listaUsuarios.get(i).getCiudad();
-
                 datos[i][10] = listaUsuarios.get(i).getProvincia();
-
                 datos[i][11] = listaUsuarios.get(i).getCalle();
-
             }
             DefaultTableModel model = new DefaultTableModel(datos, columnas);
             return model;
-
         } catch (Exception ex) {
             Logger.getLogger(JFrameUsarios.class.getName()).log(Level.SEVERE, null, ex);
         }

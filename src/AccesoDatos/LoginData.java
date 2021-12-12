@@ -53,7 +53,15 @@ public class LoginData implements ILoginData {
         login.setNombre(datosLogin[0]);
         login.setTipoUsuario(datosLogin[4]);
         login.setUsuario(datosLogin[6]);
+        
+        login.setApellido(datosLogin[1]);
+        login.setNumeroTelefonico(Integer.parseInt(datosLogin[3]));
+        login.setCorreoElectronico(datosLogin[5]);
+        login.setPais(datosLogin[8]);
+        login.setCiudad(datosLogin[9]);
+        login.setProvincia(datosLogin[10]);
+        login.setCalle(datosLogin[11]);
         return login;
-    }
+    }   
 
 }
