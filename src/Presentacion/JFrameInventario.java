@@ -80,7 +80,6 @@ public class JFrameInventario extends javax.swing.JFrame {
         jButton_ActualizarProd = new javax.swing.JButton();
         jButton_EliminarProd = new javax.swing.JButton();
         jButton_Limpiar = new javax.swing.JButton();
-        jLabel_ErrorInv = new javax.swing.JLabel();
         jLabel_Codigo = new javax.swing.JLabel();
         jLabel_CodigoValor = new javax.swing.JLabel();
         jLabel_Fondo = new javax.swing.JLabel();
@@ -212,11 +211,6 @@ public class JFrameInventario extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton_Limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 410, -1, -1));
-
-        jLabel_ErrorInv.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel_ErrorInv.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel_ErrorInv.setText("Error");
-        getContentPane().add(jLabel_ErrorInv, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 580, 1170, 120));
 
         jLabel_Codigo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel_Codigo.setForeground(new java.awt.Color(0, 51, 51));
@@ -351,30 +345,40 @@ public class JFrameInventario extends javax.swing.JFrame {
 
     private boolean ValidarFormularioInventario() {
         boolean bandera = true;
-        String mensaje = "";
-        jLabel_ErrorInv.setVisible(false);
-        jLabel_ErrorInv.setText("");
-
-        if (jTextField_NombreProd.getText().length() < 3) {
-            mensaje += "* El nombre debe tener al menos 3 caracteres";
+        if (jTextField_NombreProd.getText().length() < 6) {
+            JOptionPane.showMessageDialog(this, "El nombre del producto debe tener al menos de 6 caracteres", null, 2);
+            bandera = false;
+        }
+        if (jTextField_NombreProd.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del producto no puede estar vacío", null, 2);
             bandera = false;
         }
         if (jTextField_NombreProd.getText().length() > 50) {
-            mensaje += "* El nombre debe tener menos 50 caracteres";
+            JOptionPane.showMessageDialog(this, "El nombre del producto debe tener menos de 50 caracteres", null, 2);
             bandera = false;
         }
 
         if (Integer.parseInt(jTextField_Cantidad.getText()) > 10) {
-            mensaje += "* Solo de permiten 10 existencias de un mismo producto ";
+            JOptionPane.showMessageDialog(this, "Solo de permiten 10 existencias de un mismo producto", null, 2);
+            bandera = false;
+        }
+        if (jTextField_Cantidad.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La Cantidad no puede estar vacía", null, 2);
+            bandera = false;
+        }
+        if (Integer.parseInt(jTextField_Cantidad.getText()) < 1) {
+            JOptionPane.showMessageDialog(this, "Ingrese al menos 1 existencia", null, 2);
             bandera = false;
         }
         if (Double.parseDouble(jTextField_Precio.getText()) < 0) {
-            mensaje += "* El precio tiene que ser mayor a 0 ";
+            JOptionPane.showMessageDialog(this, "El precio tiene que ser mayor a 0", null, 2);
+            bandera = false;
+        }
+                if (jTextField_Precio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El Precio no puede estar vacío", null, 2);
             bandera = false;
         }
 
-        jLabel_ErrorInv.setVisible(true);
-        jLabel_ErrorInv.setText(mensaje);
         return bandera;
     }
 
@@ -436,7 +440,6 @@ public class JFrameInventario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Cat;
     private javax.swing.JLabel jLabel_Codigo;
     private javax.swing.JLabel jLabel_CodigoValor;
-    private javax.swing.JLabel jLabel_ErrorInv;
     private javax.swing.JLabel jLabel_Fondo;
     private javax.swing.JLabel jLabel_NombreProd;
     private javax.swing.JLabel jLabel_Precio;

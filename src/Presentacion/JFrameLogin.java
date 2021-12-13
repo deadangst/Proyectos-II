@@ -82,8 +82,6 @@ public class JFrameLogin extends javax.swing.JFrame {
         jLabel2Password.setText("Password");
         getContentPane().add(jLabel2Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 241, -1, -1));
         getContentPane().add(jTextField1Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 165, 154, -1));
-
-        jPasswordField_Password.setText("jPasswordField1");
         getContentPane().add(jPasswordField_Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 230, 154, -1));
 
         jButton1Ingresar.setBackground(new java.awt.Color(0, 102, 102));

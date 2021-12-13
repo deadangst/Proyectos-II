@@ -327,6 +327,7 @@
             </Property>
           </Properties>
           <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTxt_FiltroActionPerformed"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTxt_FiltroKeyTyped"/>
           </Events>
         </Component>
@@ -499,6 +500,7 @@
           <Color blue="33" green="33" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Neto a Pagar"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;El calculo del neto incluye:&#xa;&lt;br&gt;30% de env&#xed;o sobre el subtotal de la compra&#xa;&lt;br&gt;20% IVA sobre el subtotal de la compra &lt;/html&gt;&#xa;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_NetoActionPerformed"/>
@@ -517,7 +519,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;El costo del envi&#xf3; es 30% sobre el subtotal de la compra&lt;/html&gt;&#xa;&lt;html&gt;El impuesto de valor agregado es de un 20% sobre el subtotal de la compra&lt;/html&gt;&#xa;"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

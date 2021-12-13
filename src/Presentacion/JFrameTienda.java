@@ -113,9 +113,6 @@ public class JFrameTienda extends javax.swing.JFrame {
                 datos[i][4] = listaTienda.get(i).getTotal();
                 datos[i][5] = listaTienda.get(i).getCategoría();
             }
-//            for (Tienda dato : listaTienda) {
-//                detalleDatos += dato + "\n";
-//            }
             DefaultTableModel model = new DefaultTableModel(datos, columnas);
             return model;
         } catch (Exception ex) {
@@ -259,6 +256,11 @@ public class JFrameTienda extends javax.swing.JFrame {
         jTextField_Nombre.setBackground(new java.awt.Color(0, 153, 153));
 
         jTxt_Filtro.setBackground(new java.awt.Color(0, 153, 153));
+        jTxt_Filtro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxt_FiltroActionPerformed(evt);
+            }
+        });
         jTxt_Filtro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTxt_FiltroKeyTyped(evt);
@@ -423,6 +425,7 @@ public class JFrameTienda extends javax.swing.JFrame {
 
         jButton_Neto.setBackground(new java.awt.Color(0, 51, 51));
         jButton_Neto.setText("Neto a Pagar");
+        jButton_Neto.setToolTipText("<html>El calculo del neto incluye:\n<br>30% de envío sobre el subtotal de la compra\n<br>20% IVA sobre el subtotal de la compra </html>\n");
         jButton_Neto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_NetoActionPerformed(evt);
@@ -432,7 +435,7 @@ public class JFrameTienda extends javax.swing.JFrame {
 
         jTextField_Neto.setBackground(new java.awt.Color(0, 153, 153));
         jTextField_Neto.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField_Neto.setToolTipText("<html>El costo del envió es 30% sobre el subtotal de la compra</html>\n<html>El impuesto de valor agregado es de un 20% sobre el subtotal de la compra</html>\n");
+        jTextField_Neto.setToolTipText("");
         getContentPane().add(jTextField_Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 883, 147, -1));
 
         jButton_FinalizarCompra.setBackground(new java.awt.Color(0, 51, 51));
@@ -645,6 +648,10 @@ public class JFrameTienda extends javax.swing.JFrame {
         jfPrincipalCliente.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
+
+    private void jTxt_FiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxt_FiltroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxt_FiltroActionPerformed
 
     /**
      * @param args the command line arguments

@@ -333,7 +333,6 @@ public class JFrameUsarios extends javax.swing.JFrame {
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 509, -1, -1));
 
         jPasswordField_Password.setBackground(new java.awt.Color(0, 153, 153));
-        jPasswordField_Password.setText("jPasswordField1");
         getContentPane().add(jPasswordField_Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(319, 545, 140, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/1600px BG.png"))); // NOI18N

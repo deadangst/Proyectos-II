@@ -25,6 +25,7 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
     static String ciudad;
     static String provincia;
     static String pais;
+    static String tipoUser;
 
     public JFramePrincipalAdmin() {
         initComponents();
@@ -38,6 +39,7 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel_Bievenida = new javax.swing.JLabel();
         jLabel_Fondo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu_Salir = new javax.swing.JMenu();
@@ -53,6 +55,11 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel_Bievenida.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        jLabel_Bievenida.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel_Bievenida.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/60 px icon.png"))); // NOI18N
+        getContentPane().add(jLabel_Bievenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 490, 70));
 
         jLabel_Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/1230px BG.png"))); // NOI18N
         getContentPane().add(jLabel_Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, -24, 1030, 530));
@@ -218,11 +225,14 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
         provincia = this.login.getProvincia();
         pais = this.login.getPais();
         telefono = this.login.getNumeroTelefonico();
-        email = this.login.getCorreoElectronico();
+        email = this.login.getCorreoElectronico(); 
+        tipoUser = this.login.getTipoUsuario();
         
-        
+        jLabel_Bievenida.setText("Buen día " +tipoUser+": "+nombre+" "+apellido);
         
     }   
+    
+    
 
     
 
@@ -233,6 +243,7 @@ public class JFramePrincipalAdmin extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem MenuUsuarios;
     private javax.swing.JCheckBoxMenuItem Menu_Historial;
     private javax.swing.JCheckBoxMenuItem Menu_Inventario;
+    private javax.swing.JLabel jLabel_Bievenida;
     private javax.swing.JLabel jLabel_Fondo;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenu_Admin;
